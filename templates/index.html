@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Поисковик лекарств</title>
+		<title>Поиск лекарств</title>
 		<style>
 			.title {
 				display: block;
@@ -31,11 +31,15 @@
 				font-weight: normal;
 				margin-left: 5px;
 			}
+			.search-result-footer {
+				background-color: #f2f2f2;
+				text-align: center;
+			}
 		</style>
 	</head>
 	<body>
 		<div>
-			<span class="title">Поисковик лекарств</span>
+			<span class="title">Поиск лекарств</span>
 			<form action="/" method="post" class="search-form">
 				<div>
 					<label for="shop">Магазин</label>
@@ -104,106 +108,113 @@
 				</div>
 			</form>
 			{% if items %}
-			<table id="search-result">
-				<caption>Результат поиска</caption>
-				<thead>
-					<tr>
-						<th onclick="sortTable(0)">Магазин<span class="table-header-sort-dir"></span></th>
-						<th onclick="sortTable(1)">Категория<span class="table-header-sort-dir"></span></th>
-						<th onclick="sortTable(2)">Наименование<span class="table-header-sort-dir"></span></th>
-						<th onclick="sortTable(3)">Цена<span class="table-header-sort-dir"></span ></th>
-						<!-- <th>Цена без скидки</th> -->
-						<!-- <th>Ссылка</th> -->
-						<!-- <th>Картинка</th> -->
-					</tr>
-				</thead>
-				<script>
-					function sortTable(n) {
-						var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-						table = document.getElementById("search-result");
-						theaders = document.querySelectorAll("#search-result > thead > tr > th");
-						for (i = 0; i < theaders.length; i++) {
-							header = theaders[i];
-							hspan = header.getElementsByTagName('span')[0];
-							hspan.innerHTML = '';
-						}
-						switching = true;
-						dir = "asc";
-						while (switching) {
-							switching = false;
-							rows = table.rows;
-							for (i = 1; i < (rows.length - 1); i++) {
-								shouldSwitch = false;
-								x = rows[i].getElementsByTagName("TD")[n];
-								y = rows[i + 1].getElementsByTagName("TD")[n];
-								if (dir == "asc") {
-									xspan = x.getElementsByTagName('span');
-									yspan = y.getElementsByTagName('span');
-									if (xspan.length > 0 && yspan.length > 0) {
-										if (Number(xspan[0].innerHTML) > Number(yspan[0].innerHTML)) {
-											shouldSwitch = true;
-											break;
-										}
-									} else {
-										if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-											shouldSwitch = true;
-											break;
-										}
-									}
-								} else if (dir == "desc") {
-									xspan = x.getElementsByTagName('span');
-									yspan = y.getElementsByTagName('span');
-									if (xspan.length > 0 && yspan.length > 0) {
-										if (Number(xspan[0].innerHTML) < Number(yspan[0].innerHTML)) {
-											shouldSwitch = true;
-											break;
-										}
-									} else {
-										if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-											shouldSwitch = true;
-											break;
-										}
-									}
-								}
-							}
-							if (shouldSwitch) {
-								rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-								switching = true;
-								switchcount ++;
-							} else {
-								if (switchcount == 0 && dir == "asc") {
-									dir = "desc";
-									switching = true;
-								}
-							}
-						}
-						header = theaders[n];
-						hspan = header.getElementsByTagName('span')[0];
-						if (dir === 'asc') {
-							hspan.innerHTML = '↓';
-						} else if (dir === 'desc') {
-							hspan.innerHTML = '↑';
-						}
-					}
-				</script>
-				<tbody>
-					{% for item in items %}
+				<table id="search-result">
+					<caption>Результат поиска</caption>
+					<thead>
 						<tr>
-							<td>{{ item[0] }}</td>
-							<td>{{ item[1] }}</td>
-							<td><a href="{{ item[5] }}" target="_blank" rel="noopener noreferrer">{{ item[2] }}</a></td>
-							{% if item[3] == item[4] %}
-								<td><span>{{ item[3] }}</span></td>
-							{% else %}
-								<td><span>{{ item[3] }}</span> <s><small>{{ item[4] }}</small></s></td>
-							{% endif %}
+							<th onclick="sortTable(0)">Магазин<span class="table-header-sort-dir"></span></th>
+							<th onclick="sortTable(1)">Категория<span class="table-header-sort-dir"></span></th>
+							<th onclick="sortTable(2)">Наименование<span class="table-header-sort-dir"></span></th>
+							<th onclick="sortTable(3)">Цена<span class="table-header-sort-dir"></span ></th>
+							<!-- <th>Цена без скидки</th> -->
+							<!-- <th>Ссылка</th> -->
+							<!-- <th>Картинка</th> -->
 						</tr>
-						<!-- <td>{{ item[4] }}</td> -->
-						<!-- <td>{{ item[5] }}</td> -->
-						<!-- <td>{{ item[6] }}</td> -->
-					{% endfor %}
-				</tbody>
-			</table>
+					</thead>
+					<script>
+						function sortTable(n) {
+							var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+							table = document.getElementById("search-result");
+							theaders = document.querySelectorAll("#search-result > thead > tr > th");
+							for (i = 0; i < theaders.length; i++) {
+								header = theaders[i];
+								hspan = header.getElementsByTagName('span')[0];
+								hspan.innerHTML = '';
+							}
+							switching = true;
+							dir = "asc";
+							while (switching) {
+								switching = false;
+								rows = table.rows;
+								for (i = 1; i < (rows.length - 1); i++) {
+									shouldSwitch = false;
+									x = rows[i].getElementsByTagName("TD")[n];
+									y = rows[i + 1].getElementsByTagName("TD")[n];
+									if (dir == "asc") {
+										xspan = x.getElementsByTagName('span');
+										yspan = y.getElementsByTagName('span');
+										if (xspan.length > 0 && yspan.length > 0) {
+											if (Number(xspan[0].innerHTML) > Number(yspan[0].innerHTML)) {
+												shouldSwitch = true;
+												break;
+											}
+										} else {
+											if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+												shouldSwitch = true;
+												break;
+											}
+										}
+									} else if (dir == "desc") {
+										xspan = x.getElementsByTagName('span');
+										yspan = y.getElementsByTagName('span');
+										if (xspan.length > 0 && yspan.length > 0) {
+											if (Number(xspan[0].innerHTML) < Number(yspan[0].innerHTML)) {
+												shouldSwitch = true;
+												break;
+											}
+										} else {
+											if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+												shouldSwitch = true;
+												break;
+											}
+										}
+									}
+								}
+								if (shouldSwitch) {
+									rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+									switching = true;
+									switchcount ++;
+								} else {
+									if (switchcount == 0 && dir == "asc") {
+										dir = "desc";
+										switching = true;
+									}
+								}
+							}
+							header = theaders[n];
+							hspan = header.getElementsByTagName('span')[0];
+							if (dir === 'asc') {
+								hspan.innerHTML = '↓';
+							} else if (dir === 'desc') {
+								hspan.innerHTML = '↑';
+							}
+						}
+					</script>
+					<tbody>
+						{% for item in items %}
+							<tr>
+								<td>{{ item[0] }}</td>
+								<td>{{ item[1] }}</td>
+								<td><a href="{{ item[5] }}" target="_blank" rel="noopener noreferrer">{{ item[2] }}</a></td>
+								{% if item[3] == item[4] %}
+									<td><span>{{ item[3] }}</span></td>
+								{% else %}
+									<td><span>{{ item[3] }}</span> <s><small>{{ item[4] }}</small></s></td>
+								{% endif %}
+							</tr>
+							<!-- <td>{{ item[4] }}</td> -->
+							<!-- <td>{{ item[5] }}</td> -->
+							<!-- <td>{{ item[6] }}</td> -->
+						{% endfor %}
+					</tbody>
+					{% if items_amount > items_show_limit %}
+						<tfoot>
+							<tr>
+								<td class="search-result-footer" colspan="4">Еще {{ items_amount - items_show_limit }} товаров...</td>
+							</tr>
+						</tfoot>
+					{% endif %}
+				</table>
 			{% endif %}
 		</div>
 	</body>

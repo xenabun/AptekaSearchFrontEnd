@@ -16,6 +16,8 @@ RIGLA_categories = {
 	'Витамины и БАД': '/cat/vitaminy-i-bady',
 }
 
+scrapper.clear_file(file_name)
+
 def RIGLA_get_max_pagination(page_name):
 	response = requests.get(url + page_name, headers=scrapper.headers)
 	soup = BeautifulSoup(response.content, "html.parser")

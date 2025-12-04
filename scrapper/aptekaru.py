@@ -16,6 +16,8 @@ APTEKARU_categories = {
 	'Витамины и БАД': '/category/vitamin-mineral',
 }
 
+scrapper.clear_file(file_name)
+
 def APTEKARU_get_max_pagination(page_name):
 	response = requests.get(url + page_name, headers=scrapper.headers)
 	soup = BeautifulSoup(response.content, "html.parser")

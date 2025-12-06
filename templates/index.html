@@ -31,25 +31,29 @@
 						<option value="vitaminiibad">Витамины и БАД</option>
 					</select>
 				</div>
-				<div>
-					<label for="min_price">Минимальная цена</label>
-					<input type="range" id="min_price" name="min_price" min="{{ price_range[0] }}" max="{{ price_range[1] }}" value="{{ price_range[0] }}">
-					<input type="text" id="min_priceValue" name="min_priceValue" value="{{ price_range[0] }}" placeholder="Минимальная цена">
-				</div>
-				<div>
-					<label for="max_price">Максимальная цена</label>
-					<input type="range" id="max_price" name="max_price" min="{{ price_range[0] }}" max="{{ price_range[1] }}" value="{{ price_range[1] }}">
-					<input type="text" id="max_priceValue" name="max_priceValue" value="{{ price_range[1] }}" placeholder="Максимальная цена">
-				</div>
+				{% if price_range %}
+					<div>
+						<label for="min_price">Минимальная цена</label>
+						<input type="range" id="min_price" name="min_price" min="{{ price_range[0] }}" max="{{ price_range[1] }}" value="{{ price_range[0] }}">
+						<input type="text" id="min_priceValue" name="min_priceValue" value="{{ price_range[0] }}" placeholder="Минимальная цена">
+					</div>
+					<div>
+						<label for="max_price">Максимальная цена</label>
+						<input type="range" id="max_price" name="max_price" min="{{ price_range[0] }}" max="{{ price_range[1] }}" value="{{ price_range[1] }}">
+						<input type="text" id="max_priceValue" name="max_priceValue" value="{{ price_range[1] }}" placeholder="Максимальная цена">
+					</div>
+				{% endif %}
 				<div>
 					<label for="discount">Со скидкой</label>
 					<input type="checkbox" id="discount" name="discount" />
 				</div>
-				<div>
-					<label for="search">Поиск</label>
-					<input type="search" id="search" name="name" placeholder="Введите запрос">
-					<button type="submit">Найти</button>
-				</div>
+				{% if price_range %}
+					<div>
+						<label for="search">Поиск</label>
+						<input type="search" id="search" name="name" placeholder="Введите запрос">
+						<button type="submit">Найти</button>
+					</div>
+				{% endif %}
 			</form>
 			{% if items %}
 				<table id="search-result">

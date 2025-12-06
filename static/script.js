@@ -1,29 +1,33 @@
-const min_priceSlider = document.getElementById("min_price");
-const min_priceValue = document.getElementById("min_priceValue");
-const max_priceSlider = document.getElementById("max_price");
-const max_priceValue = document.getElementById("max_priceValue");
-min_priceSlider.oninput = function(e) {
-	min_priceValue.value = e.target.value;
-	if (parseInt(e.target.value) > parseInt(max_priceValue.value)) {
-		max_priceSlider.value = e.target.value;
-		max_priceValue.value = e.target.value;
-	}
-};
-max_priceSlider.oninput = function(e) {
-	max_priceValue.value = e.target.value;
-	if (parseInt(e.target.value) < parseInt(min_priceValue.value)) {
-		min_priceSlider.value = e.target.value;
+document.addEventListener('DOMContentLoaded', function() {
+	const min_priceSlider = document.getElementById("min_price");
+	const min_priceValue = document.getElementById("min_priceValue");
+	const max_priceSlider = document.getElementById("max_price");
+	const max_priceValue = document.getElementById("max_priceValue");
+	min_priceSlider.oninput = function(e) {
 		min_priceValue.value = e.target.value;
-	}
-};
-min_priceValue.onchange = function() {
-	min_priceSlider.value = Math.min(Math.max(parseInt(min_priceValue.value), min_priceSlider.min), min_priceSlider.max) || min_priceSlider.min;
-	min_priceValue.value = Math.min(Math.max(parseInt(min_priceValue.value), min_priceSlider.min), min_priceSlider.max) || min_priceSlider.min;
-};
-max_priceValue.onchange = function() {
-	max_priceSlider.value = Math.min(Math.max(parseInt(max_priceValue.value), max_priceSlider.min), max_priceSlider.max) || max_priceSlider.max;
-	max_priceValue.value = Math.min(Math.max(parseInt(max_priceValue.value), max_priceSlider.min), max_priceSlider.max) || max_priceSlider.max;
-};
+		if (parseInt(e.target.value) > parseInt(max_priceValue.value)) {
+			max_priceSlider.value = e.target.value;
+			max_priceValue.value = e.target.value;
+		}
+	};
+	max_priceSlider.oninput = function(e) {
+		max_priceValue.value = e.target.value;
+		if (parseInt(e.target.value) < parseInt(min_priceValue.value)) {
+			min_priceSlider.value = e.target.value;
+			min_priceValue.value = e.target.value;
+		}
+	};
+	min_priceValue.onchange = function() {
+		min_priceSlider.value = Math.min(Math.max(parseInt(min_priceValue.value), min_priceSlider.min), min_priceSlider.max) || min_priceSlider.min;
+		min_priceValue.value = Math.min(Math.max(parseInt(min_priceValue.value), min_priceSlider.min), min_priceSlider.max) || min_priceSlider.min;
+	};
+	max_priceValue.onchange = function() {
+		max_priceSlider.value = Math.min(Math.max(parseInt(max_priceValue.value), max_priceSlider.min), max_priceSlider.max) || max_priceSlider.max;
+		max_priceValue.value = Math.min(Math.max(parseInt(max_priceValue.value), max_priceSlider.min), max_priceSlider.max) || max_priceSlider.max;
+	};
+});
+
+
 function sortTable(n) {
 	var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
 	table = document.getElementById("search-result");

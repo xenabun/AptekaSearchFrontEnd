@@ -1,4 +1,18 @@
 
+.loading-icon {
+	position: absolute;
+	left: 50%;
+	top: 400px;
+	transform: translateX(-50%);
+	display: none;
+	width: auto;
+	justify-content: center;
+	pointer-events: none;
+}
+.loading-icon > img {
+	width: 100px;
+}
+
 .title {
 	display: block;
 	width: auto;
@@ -12,11 +26,17 @@
 }
 .form__group {
 	display: flex;
-	padding: 5px;
+	padding: 2px 5px;
+}
+.form__group > * {
+	margin: 0 5px;
 }
 form > div > label {
 	display: block;
 	min-width: 150px;
+}
+.form-sort {
+	display: flex;
 }
 
 table {

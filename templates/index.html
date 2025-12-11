@@ -21,26 +21,37 @@
 				{{ render_text_field(form.max_price) }}
 				{{ render_text_field(form.discount) }}
 				{{ render_text_field(form.name) }}
+				<div class="form-sort">
+					{{ render_text_field(form.sort_by) }}
+					{{ render_text_field(form.sort_dir) }}
+				</div>
 				<div>
 					{{ form.mysubmit(class_="button button--form") }}
 				</div>
 			</form>
+			<div class="loading-icon" id="loading-icon">
+				<img src="{{ url_for('static', filename='assets/Loading_icon.gif') }}" />
+			</div>
 			{% if items %}
 				<table id="search-result" class="sortable">
 					<caption>Результат поиска</caption>
 					<thead>
 						<tr>
-							<th onclick="sortTable(0)">#<span class="table-header-sort-dir"></span></th>
-							<th onclick="sortTable(1)">Магазин<span class="table-header-sort-dir"></span></th>
-							<th onclick="sortTable(2)">Категория<span class="table-header-sort-dir"></span></th>
-							<th onclick="sortTable(3)">Наименование<span class="table-header-sort-dir"></span></th>
-							<th onclick="sortTable(4)">Цена<span class="table-header-sort-dir"></span ></th>
+							<th style="width:4%; text-align: center;" onclick="sortTable(0)">#<span class="table-header-sort-dir"></span></th>
+							<th style="width:6%" onclick="sortTable(1)">Магазин<span class="table-header-sort-dir"></span></th>
+							<th style="width:10%" onclick="sortTable(2)">Категория<span class="table-header-sort-dir"></span></th>
+							<th style="width:70%" onclick="sortTable(3)">Наименование<span class="table-header-sort-dir"></span></th>
+							<th style="width:10%" onclick="sortTable(4)">Цена<span class="table-header-sort-dir"></span ></th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for item in items %}
 							<tr>
-								<td><span>{{ (page - 1) * items_show_limit + loop.index }}</span></td>
+								{% if form.sort_by.data == 'id' and form.sort_dir.data == 'desc' %}
+									<td style="text-align: center;"><span>{{ items_amount - (page - 1) * items_show_limit - loop.index0 }}</span></td>
+								{% else %}
+									<td style="text-align: center;"><span>{{ (page - 1) * items_show_limit + loop.index }}</span></td>
+								{% endif %}
 								<td>{{ item['Магазин'] }}</td>
 								<td>{{ item['Категория'] }}</td>
 								<td><a href="{{ item[Ссылка] }}" target="_blank" rel="noopener noreferrer">{{ item['Название'] }}</a></td>
@@ -58,14 +69,12 @@
 								<td class="search-result-footer" colspan="5">
 									{% if page > min_page %}
 										<a class="button" href="javascript:{}" onclick="
-											search_form = document.getElementById('search-form');
-											search_form.page.value = +search_form.min_page.value;
-											search_form.submit();
+											set_page(get_min_page());
+											show_load();
 										">&lt;&lt;</a>
 										<a class="button" href="javascript:{}" onclick="
-											search_form = document.getElementById('search-form');
-											search_form.page.value = +search_form.page.value - 1;
-											search_form.submit();
+											set_page(get_page() - 1);
+											show_load();
 										">&lt;</a>
 									{% endif %}
 									{% for p in shown_pages %}
@@ -73,22 +82,19 @@
 											<a class="button-disabled"><b>{{ p }}</b></a>
 										{% else %}
 											<a class="button" href="javascript:{}" onclick="
-												search_form = document.getElementById('search-form');
-												search_form.page.value = +`{{ p }}`;
-												search_form.submit();
+												set_page(+`{{ p }}`);
+												show_load();
 											">{{ p }}</a>
 										{% endif %}									
 									{% endfor %}
 									{% if page < max_page %}
 										<a class="button" href="javascript:{}" onclick="
-											search_form = document.getElementById('search-form');
-											search_form.page.value = +search_form.page.value + 1;
-											search_form.submit();
+											set_page(get_page() + 1);
+											show_load();
 										">&gt;</a>
 										<a class="button" href="javascript:{}" onclick="
-											search_form = document.getElementById('search-form');
-											search_form.page.value = +search_form.max_page.value;
-											search_form.submit();
+											set_page(get_max_page());
+											show_load();
 										">&gt;&gt;</a>
 									{% endif %}
 								</td>

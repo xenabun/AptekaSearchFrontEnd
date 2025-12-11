@@ -4,6 +4,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	const min_price_const = document.getElementById("min_price_const");
 	const max_price_value = document.getElementById("max_price");
 	const max_price_const = document.getElementById("max_price_const");
+	const search_submit = document.getElementById('mysubmit');
+
+	document.getElementById('loading-icon').style.display = 'none';
+	search_submit.onclick = function() {
+		set_page(1);
+		show_load();
+	};
+
 	min_price_value.onchange = function() {
 		min_price_value.value = Math.min(Math.max(parseFloat(min_price_value.value), parseFloat(min_price_const.value)), parseFloat(max_price_const.value)) || parseFloat(min_price_const.value);
 		if (parseFloat(min_price_value.value) > parseFloat(max_price_value.value)) {
@@ -17,6 +25,26 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	};
 });
+
+function get_page() {
+	return +document.getElementById('search-form').page.value;
+}
+function get_min_page() {
+	return +document.getElementById('search-form').min_page.value;
+}
+function get_max_page() {
+	return +document.getElementById('search-form').max_page.value;
+}
+function set_page(new_page) {
+	search_form = document.getElementById('search-form');
+	search_form.page.value = new_page;
+	search_form.submit();
+}
+
+function show_load() {
+	const loading_icon = document.getElementById('loading-icon');
+	loading_icon.style.display = 'flex';
+}
 
 function sortTable(n) {
 	var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;

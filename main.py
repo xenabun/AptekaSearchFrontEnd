@@ -34,6 +34,17 @@ class SearchForm(FlaskForm):
 	max_price = FloatField('Максимальная цена')
 	discount = BooleanField('Со скидкой')
 	name = StringField('Поиск')
+	sort_by = SelectField('Сортировать', choices=[
+		('id', 'Номер'),
+		('price', 'Цену'),
+		('name', 'Название'),
+		('shop', 'Магазин'),
+		('category', 'Категорию')
+	])
+	sort_dir = SelectField('По', choices=[
+		('asc', 'Возрастанию'),
+		('desc', 'Убыванию')
+	])
 	mysubmit = SubmitField('Найти')
 
 @app.route('/')
@@ -44,6 +55,7 @@ def index():
 def search_page():
 	price_range = [0, 0]
 	items = None
+	items_amount = 0
 	items_show_limit = 10
 	page = 1
 	min_page = 1
@@ -96,6 +108,8 @@ def search_page():
 				queries.append(f'discount=true')
 			queries.append(f'min_price={form.min_price.data}')
 			queries.append(f'max_price={form.max_price.data}')
+			queries.append(f'sort_by={form.sort_by.data}')
+			queries.append(f'sort_dir={form.sort_dir.data}')
 			queries.append(f'l={items_show_limit}')
 			queries.append(f'page={page}')
 
@@ -103,6 +117,7 @@ def search_page():
 			data = response.json()
 
 			items = data['items']
+			items_amount = data['items_amount']
 			max_page = data['max_pages']
 
 			form.max_page.data = max_page
@@ -113,6 +128,7 @@ def search_page():
 						form=form,
 						exception=exception,
 						items=items,
+						items_amount=items_amount,
 						items_show_limit=items_show_limit,
 						price_range=price_range,
 						page=page,
